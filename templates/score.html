@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block remtitle %}Score Section{% endblock %}
+
+{% block cont %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+    :root {
+        --deep-blue: #1A237E;
+        --coral: #FF6F61;
+        --mint: #98FF98;
+        --light: #F4F4F8;
+        --dark: #212529;
+    }
+    body { background-color: var(--light); }
+    .navbar {
+        background-color: var(--deep-blue);
+        padding: 0.8rem 1rem;
+    }
+    .navbar-brand, .nav-link {
+        color: var(--mint) !important;
+        transition: color 0.3s ease;
+    }
+    .nav-link:hover, .nav-link.active {
+        color: var(--coral) !important;
+    }
+    .search-form {
+        max-width: 400px;
+    }
+    .search-input {
+        background-color: rgba(255,255,255,0.1);
+        border: 1px solid var(--mint);
+        color: var(--light) !important;
+    }
+    .search-input::placeholder {
+        color: rgba(255,255,255,0.7) !important;
+    }
+    .btn-custom {
+        background-color: var(--coral);
+        color: var(--light);
+        border: none;
+    }
+    .btn-custom:hover {
+        background-color: #FF8C7F;
+        color: var(--light);
+    }
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+    .card:hover {
+        transform: translateY(-5px);
+    }
+    .table thead {
+        background-color: var(--deep-blue);
+        color: var(--mint);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><i class="fas fa-user-graduate me-2"></i>User Dashboard</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('user_dashboard') }}"><i class="fas fa-home me-1"></i>Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="{{ url_for('score') }}"><i class="fas fa-star me-1"></i>Score</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('summary') }}"><i class="fas fa-chart-bar me-1"></i>Summary</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+                </li>
+            </ul>
+
+            
+            <form class="d-flex search-form" method="GET" action="{{ url_for('score') }}">
+                <input class="form-control search-input me-2" type="search" placeholder="Search quizzes..." name="query" value="{{ search_query }}">
+                <button class="btn btn-custom" type="submit"><i class="fas fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container mt-4">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title mb-4" style="color: var(--deep-blue);"><i class="fas fa-trophy me-2"></i>Your Quiz Scores</h2>
+            
+            {% if scores %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Quiz ID</th>
+                                <th>Subject</th>
+                                <th>Questions</th>
+                                <th>Date</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for score in scores %}
+                                <tr>
+                                    <td>{{ score.quiz.id }}</td>
+                                    <td>{{ score.quiz.subject.name }}</td>
+                                    <td>{{ score.quiz.questions|length }}</td>
+                                    <td>{{ score.quiz.date_of_quiz.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td>
+                                        <span class="badge bg-{{ 'success' if (score.score / score.quiz.questions|length * 100) >= 70 else 'warning' if (score.score / score.quiz.questions|length * 100) >= 50 else 'danger' }}">
+
+                                            {{ (score.score / score.quiz.questions|length * 100) | round(2) }}%
+
+
+                                        </span>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>No quiz scores available yet. Take a quiz to see your results here!
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}
