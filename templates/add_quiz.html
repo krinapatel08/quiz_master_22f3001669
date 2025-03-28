@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block remtitle %}Add New Quiz{% endblock %}
+
+{% block cont %}
+<style>
+    :root {
+        --deep-blue: #1A237E;
+        --coral: #FF6F61;
+        --mint: #98FF98;
+        --light: #F4F4F8;
+        --dark: #212529;
+    }
+    body { background-color: var(--light); }
+    .navbar { background-color: var(--deep-blue); }
+    .navbar-brand, .nav-link { color: var(--mint) !important; }
+    .nav-link:hover { color: var(--coral) !important; }
+    .card { transition: transform 0.3s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); }
+    .card:hover { transform: translateY(-5px); }
+    .btn-custom { background-color: var(--coral); color: var(--light); }
+    .btn-custom:hover { background-color: #FF8C7F; color: var(--light); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-white">
+                    <h2 class="text-center mb-0" style="color: var(--deep-blue);">Add New Quiz</h2>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        {{ form.hidden_tag() }}
+                        
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Quiz Name</label>
+                            {{ form.name(class="form-control", id="name", required=True, placeholder="Enter quiz name") }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="subject_id" class="form-label">Subject</label>
+                            {{ form.subject_id(class="form-select", id="subject_id", required=True) }}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="chapter_id" class="form-label">Chapter</label>
+                            {{ form.chapter_id(class="form-select", id="chapter_id", required=True) }}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="date_of_quiz" class="form-label">Date of Quiz</label>
+                            <input type="datetime-local" class="form-control" id="date_of_quiz" name="date_of_quiz" min="{{ today_date }}" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="time_duration" class="form-label">Time Duration (in minutes)</label>
+                            {{ form.time_duration(class="form-control", id="time_duration", required=True, placeholder="Enter duration in minutes") }}
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-custom">Add Quiz</button>
+                            <a href="{{ url_for('quiz_management') }}" class="btn btn-outline-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
