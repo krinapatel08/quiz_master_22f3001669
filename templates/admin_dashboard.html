@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block remtitle %}Admin Dashboard{% endblock %}
+
+{% block cont %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+    :root {
+        --deep-blue: #1A237E;
+        --coral: #FF6F61;
+        --mint: #98FF98;
+        --light: #F4F4F8;
+        --dark: #212529;
+    }
+    body { background-color: var(--light); }
+    .sidebar { background-color: var(--deep-blue); min-height: 100vh; }
+    .sidebar .nav-link { color: var(--light); }
+    .sidebar .nav-link:hover { color: var(--mint); }
+    .main-content { background-color: var(--light); }
+    .card { transition: transform 0.3s; }
+    .card:hover { transform: translateY(-5px); }
+    .btn-custom { background-color: var(--coral); color: var(--light); }
+    .btn-custom:hover { background-color: #FF8C7F; color: var(--light); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <div class="sidebar text-white p-4" style="width: 250px;">
+        <h2 class="text-center mb-4">Admin Panel</h2>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                    <i class="bi bi-house-door me-2"></i> Home
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{{ url_for('quiz_management') }}">
+                    <i class="bi bi-pencil-square me-2"></i> Quizzes
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{{ url_for('admin_summary') }}">
+                    <i class="bi bi-bar-chart me-2"></i> Summary
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">
+                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+    
+    
+    <div class="main-content flex-grow-1 p-5">
+        <nav class="navbar navbar-light bg-white shadow-sm mb-4 rounded">
+            <div class="container-fluid">
+                <h3 class="mb-0">Welcome, Admin</h3>
+                <form class="d-flex" method="GET" action="{{ url_for('search') }}">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="query">
+                    <button class="btn btn-custom" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+    
+        <div class="row mb-4">
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total Subjects</h5>
+                        <p class="display-4">{{ total_subjects }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total Users</h5>
+                        <p class="display-4">{{ total_users }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card shadow-sm rounded">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total Quizzes</h5>
+                        <p class="display-4">{{ total_quizzes }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h4 class="mb-0">Subjects</h4>
+            </div>
+            <div class="card-body">
+                {% if subjects %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for subject in subjects %}
+                                    <tr>
+                                        <td>{{ subject.name }}</td>
+                                        <td>{{ subject.description }}</td>
+                                        <td>
+                                            <a href="{{ url_for('edit_subject', subject_id=subject.id) }}" class="btn btn-sm btn-outline-primary me-1">
+                                                <i class="bi bi-pencil-square"></i> Edit
+                                            </a>
+                                            <form action="{{ url_for('delete_subject', subject_id=subject.id) }}" method="POST" style="display: inline;">
+                                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                                <button type="submit" class="btn btn-danger btn-sm" 
+                                                        onclick="return confirm('Are you sure you want to delete this subject?');">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                            <a href="{{ url_for('add_chapter', subject_id=subject.id) }}" class="btn btn-sm btn-outline-success">
+                                                <i class="bi bi-plus-circle"></i> Add Chapter
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-center">No subjects available.</p>
+                {% endif %}
+            </div>
+            <div class="card-footer bg-white">
+                <a href="{{ url_for('add_subject') }}" class="btn btn-custom w-100">Add New Subject</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

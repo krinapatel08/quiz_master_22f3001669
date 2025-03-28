@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block remtitle %}Home | Quiz Master{% endblock %}
+
+{% block cont %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<<style>
+    :root {
+        --blue: #1A237E;
+        --coral: #FF6F61;
+        --mint: #98FF98;
+        --light: #F4F4F8;
+        --dark: #333;
+    }
+    body { background: var(--light); color: var(--dark); font-family: Arial, sans-serif; }
+    .navbar, .hero-section, .footer { background: var(--blue); color: white; }
+    .navbar-brand, .nav-link, .footer { color: var(--mint) !important; }
+    .btn-custom { background: var(--coral); color: white; border: none; }
+    .btn-custom:hover { background: #FF8C7F; }
+    .card { box-shadow: 0 4px 6px rgba(0,0,0,.1); transition: transform .3s; }
+    .card:hover { transform: translateY(-5px); }
+    .card-header { background: var(--blue); color: var(--mint); }
+    h1, h2 { color: var(--coral); }
+</style>
+
+
+{% endblock %}
+
+{% block content %}
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="#">Quiz Master</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('register') }}">Register</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1>Welcome to Quiz Master</h1>
+            <p class="lead">Test your knowledge with interactive quizzes</p>
+            <div class="mt-4">
+                <a href="{{ url_for('login') }}" class="btn btn-custom">Login</a>
+                <a href="{{ url_for('register') }}" class="btn btn-outline-light">Register</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Our Features</h2>
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-header">Interactive Quizzes</div>
+                        <div class="card-body">
+                            <p>Challenge yourself with timed questions across various subjects.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-header">Progress Tracking</div>
+                        <div class="card-body">
+                            <p>Monitor your performance with personalized scorecards.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <div class="card">
+                        <div class="card-header">Admin Dashboard</div>
+                        <div class="card-body">
+                            <p>Manage users, quizzes, and subjects efficiently.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer text-center">
+        <p>&copy; 2025 Quiz Master. All rights reserved.</p>
+    </footer>
+</body>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

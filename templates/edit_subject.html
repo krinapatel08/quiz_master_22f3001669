@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block remtitle %}Edit Subject{% endblock %}
+
+{% block cont %}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+<style>
+    :root {
+        --deep-blue: #1A237E;
+        --coral: #FF6F61;
+        --mint: #98FF98;
+        --light: #F4F4F8;
+        --dark: #212529;
+    }
+    body { background-color: var(--light); }
+    .sidebar { background-color: var(--deep-blue); min-height: 100vh; }
+    .sidebar .nav-link { color: var(--light); }
+    .sidebar .nav-link:hover { color: var(--mint); }
+    .main-content { background-color: var(--light); }
+    .card { transition: transform 0.3s; }
+    .card:hover { transform: translateY(-5px); }
+    .btn-custom { background-color: var(--coral); color: var(--light); }
+    .btn-custom:hover { background-color: #FF8C7F; color: var(--light); }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex">
+    <!-- Sidebar -->
+    <div class="sidebar text-white p-4" style="width: 250px;">
+        <h2 class="text-center mb-4">Admin Panel</h2>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{{ url_for('admin_dashboard') }}">
+                    <i class="bi bi-house-door me-2"></i> Home
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{{ url_for('quiz_management') }}">
+                    <i class="bi bi-pencil-square me-2"></i> Quizzes
+                </a>
+            </li>
+            <li class="nav-item mb-2">
+                <a class="nav-link" href="{{ url_for('admin_summary') }}">
+                    <i class="bi bi-bar-chart me-2"></i> Summary
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ url_for('logout') }}">
+                    <i class="bi bi-box-arrow-right me-2"></i> Logout
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content flex-grow-1 p-4">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h2 class="mb-0" style="color: var(--deep-blue);">
+                    <i class="bi bi-pencil me-2"></i>Edit Subject
+                </h2>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Subject Name</label>
+                        {{ form.name(class="form-control", id="name") }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        {{ form.description(class="form-control", id="description", rows=3) }}
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-custom">
+                            <i class="bi bi-check-circle me-2"></i>Save Changes
+                        </button>
+                        <a href="{{ url_for('view_subject', subject_id=subject.id) }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

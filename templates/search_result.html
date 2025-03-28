@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block remtitle %}Search Results{% endblock %}
+
+{% block cont %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+<style>
+    :root {
+        --deep-blue: #1A237E;
+        --coral: #FF6F61;
+        --mint: #98FF98;
+        --light: #F4F4F8;
+        --dark: #212529;
+    }
+    body { background-color: var(--light); }
+    .card {
+        border: none;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .btn-custom {
+        background-color: var(--coral);
+        color: var(--light);
+        border: none;
+    }
+    .btn-custom:hover {
+        background-color: #FF8C7F;
+        color: var(--light);
+    }
+    .list-group-item {
+        border-left: 4px solid var(--deep-blue);
+        transition: background-color 0.3s;
+    }
+    .list-group-item:hover {
+        background-color: var(--light);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card mb-4">
+        <div class="card-body">
+            <h2 class="card-title mb-4" style="color: var(--deep-blue);">
+                <i class="fas fa-search me-2"></i>Search Results for "{{ query }}"
+            </h2>
+            
+            {% if not users and not subjects and not quizzes %}
+                <div class="alert alert-info" role="alert">
+                    <i class="fas fa-info-circle me-2"></i>No results found for your search query.
+                </div>
+            {% endif %}
+
+            {% if users %}
+                <h4><i class="fas fa-users me-2"></i>Users</h4>
+                <ul class="list-group mb-4">
+                    {% for user in users %}
+                        <li class="list-group-item">
+                            <i class="fas fa-user me-2"></i>{{ users.username }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if subjects %}
+                <h4><i class="fas fa-book me-2"></i>Subjects</h4>
+                <ul class="list-group mb-4">
+                    {% for subject in subjects %}
+                        <li class="list-group-item">
+                            <i class="fas fa-bookmark me-2"></i>{{ subject.name }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-bookmark me-2"></i>{{ subject.description }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {% if quizzes %}
+                <h4><i class="fas fa-question-circle me-2"></i>Quizzes</h4>
+                <ul class="list-group mb-4">
+                    {% for quiz in quizzes %}
+                        <li class="list-group-item">
+                            <i class="fas fa-clipboard-list me-2"></i>{{ quiz.remarks }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-clipboard-list me-2"></i>{{ quiz.chapter.name }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-clipboard-list me-2"></i>{{ quiz.date_of_quiz }}
+                        </li>
+                        <li class="list-group-item">
+                            <i class="fas fa-clipboard-list me-2"></i>{{ quiz.time_duration }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            
+            <a href="{{ url_for('admin_dashboard') }}" class="btn btn-custom">
+                <i class="fas fa-arrow-left me-2"></i>Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
