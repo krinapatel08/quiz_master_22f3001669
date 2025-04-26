@@ -5,4 +5,3 @@ Flask-Login
 Werkzeug
 matplotlib
 pytz
-gunicorn
